@@ -1,0 +1,91 @@
+/*
+ * PT. Singa Manpower Export — Custom Stylesheet
+ * ─────────────────────────────────────────────
+ * Strategy:
+ *   • Tailwind CDN (Play CDN) is loaded in index.html with an inline
+ *     `tailwind.config` block that registers the brand color tokens.
+ *   • This file handles only what Tailwind utilities cannot express on
+ *     their own: pseudo-element connectors, keyframe animations,
+ *     scroll-behaviour, and a small set of semantic component helpers.
+ *
+ * Brand palette (mirrored from tailwind.config in index.html):
+ *   navy        → #0B132B   (Midnight dark — hero & footer bg)
+ *   navy-brand  → #182A4A   (Brand navy — headings & text on light bg)
+ *   navy-mid    → #1C2541
+ *   gold        → #C59B3F   (Primary brand gold)
+ *   gold-hover  → #D4AF37   (Gold hover state)
+ *   soft-bg     → #F8FAFC   (Light section tint)
+ */
+
+/* ── Global ──────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ── Hero background pattern overlay ────────────────────────── */
+.hero-pattern::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ── Qualification card — gold left border accent ────────────── */
+.qual-card {
+  border-left-width: 4px;
+  border-left-color: #C59B3F;
+}
+
+/* ── Process timeline — horizontal connector arrow ───────────── */
+/*
+ * On md+ screens each step gets a right-side pseudo-element arrow.
+ * This cannot be written with pure Tailwind utilities (pseudo-element
+ * with absolute positioning needs dynamic sibling-awareness).
+ */
+@media (min-width: 768px) {
+  .timeline-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 23px;
+    right: -14px;
+    width: 28px;
+    height: 2px;
+    background: #C59B3F;
+    z-index: 1;
+  }
+}
+
+/* ── Floating WA label — pulse animation ────────────────────── */
+@keyframes waPulse {
+  0%, 100% { opacity: 1;   transform: scale(1);    }
+  50%       { opacity: .82; transform: scale(.975); }
+}
+
+.wa-label-pulse {
+  animation: waPulse 3s ease-in-out infinite;
+}
+
+/* ── Hover utilities not in base Tailwind ────────────────────── */
+.btn-hover-lift {
+  transition: filter .15s ease, transform .1s ease;
+}
+.btn-hover-lift:hover  { filter: brightness(1.08); transform: translateY(-1px); }
+.btn-hover-lift:active { transform: translateY(0); }
+
+/* ── Contact WA link hover ───────────────────────────────────── */
+.wa-contact-link:hover {
+  background-color: rgba(212, 175, 55, 0.2);
+}
+
+/* ── Vacancy status green ────────────────────────────────────── */
+.status-open { color: #16a34a; }
+
+/* ── Gold accent text for footer bottom ─────────────────────── */
+.text-gold-accent { color: #D4AF37; font-weight: 600; }
+
+/* ── Address block muted text colour ────────────────────────── */
+.address-muted { color: #b0bdd6; }
+
+/* ── Step connector positioning context ─────────────────────── */
+.timeline-step { position: relative; }
